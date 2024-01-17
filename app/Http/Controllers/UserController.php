@@ -44,5 +44,32 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function UserLogin(Request $request)
+    {
+        try {
+            
+            $email = $request->input('email');
+            $password = $request->input('password');
+
+            $count = User::where('email', '=', $email)->where('password', '=', $password)->count();
+            if ($count == 1) {
+
+                $token = JWTToken::CreateToken($email);
+
+                return response()->json([
+                    'status' => 'success',
+                    'massage' => 'User Login successfully!',
+                    'token' => $token
+                ]);
+            }
+        } 
+        catch (Exception $e) {
+            return response()->json([
+                'status' => 'Fail',
+                'massage' => 'unauthorized'
+            ]);
+        }
+    }
    
 }
