@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Validator;
-
 use Exception;
+use App\Models\User;
+
+use App\Helper\JWTToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -29,19 +30,19 @@ class UserController extends Controller
                 'lastName' => $request->input('lastName'),
                 'email' => $request->input('email'),
                 'phone' => $request->input('phone'),
-                'password' =>Hash::make( $request->input('password'))
+                'password' => $request->input('password')
             ]);
 
             return response()->json([
                 "status" => "Success",
                 "massage" => "User Create Successfully!",
             ]);
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
                 "massage" => $e->getMessage()
             ]);
         }
     }
+   
 }
