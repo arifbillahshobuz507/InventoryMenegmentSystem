@@ -59,15 +59,14 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'massage' => 'User Login successfully!',
+                    'massage' => "User Login successfully",
                     'token' => $token
-                ]);
+                ], 500);
             }
-        } 
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return response()->json([
-                'status' => 'Fail',
-                'massage' => 'unauthorized'
+                "status" => "Faild",
+                "massage" => $e->getMessage()
             ]);
         }
     }
