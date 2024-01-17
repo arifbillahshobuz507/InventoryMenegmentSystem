@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\User;
 
+use App\Mail\OTPMail;
+use Nette\Utils\Random;
 use App\Helper\JWTToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -48,7 +51,7 @@ class UserController extends Controller
     public function UserLogin(Request $request)
     {
         try {
-            
+
             $email = $request->input('email');
             $password = $request->input('password');
 
@@ -61,7 +64,7 @@ class UserController extends Controller
                     'status' => 'success',
                     'massage' => "User Login successfully",
                     'token' => $token
-                ], 500);
+                ], 200);
             }
         } catch (Exception $e) {
             return response()->json([
@@ -70,5 +73,34 @@ class UserController extends Controller
             ]);
         }
     }
-   
+
+    public function SendOtp(Request $request)
+    {
+        try {
+
+            $request->validate([
+                'email' => 'required|string|email'
+            ]);
+
+            $email = $request->input('email');
+            $otp = rand(1000000, 9999999);
+            $count = User::where('email', '=', $email)->count();
+
+            if ($count == 1) {
+                Mail::to($email)->send(new OTPMail($otp));
+
+                User::where('email', '=', $email)->update(['otp' => $otp]);
+
+                return response()->json([
+                    'status' => 'success',
+                    'massage' => "OTP send successfully"
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => "Faild",
+                "massage" => $e->getMessage()
+            ]);
+        }
+    }
 }
