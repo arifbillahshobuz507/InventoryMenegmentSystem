@@ -21,6 +21,18 @@ class JWTToken
         return JWT::encode($payload, $key, 'HS256');
     }
 
+    public static function CreateTokenForVerify($userEmail)
+    {
+        $key = env('JWT_KEY');
+        $payload = [
+            'iss' => 'Larave',
+            'iat' => time(),
+            'exp' => time() + 60 * 6,
+            'userEmail' => $userEmail,
+        ];
+        return JWT::encode($payload, $key, 'HS256');
+    }
+
     public static function VerifyToken($token)
     {
         try {

@@ -103,4 +103,36 @@ class UserController extends Controller
             ]);
         }
     }
+
+    public function VerifyOTP(Request $request)
+    {
+        try {
+            $request->validate([
+                'email'=> 'required|email|string|max:50',
+                'otp'=> 'required|max:7'
+            ]);
+            
+            $email = $request->input('email');
+            $otp = $request->input('otp');
+
+            $count = User::where('email', '=', $email)->where('otp', '=', $otp)->count();
+
+            if ($count == 1) {
+                User::where('email', '=', $email)->where('otp', '=', $otp)->update(['otp' => '0']);
+
+                $token = JWTToken::CreateTokenForVerify($email);
+
+                return response()->json([
+                    'status' => 'success',
+                    'massage' => "OTP Veryfy successfully",
+                    'token' => $token
+                ], 200);
+            }
+        } catch (Exception $e) {
+            return response()->json([
+                "status" => "Faild",
+                "massage" => $e->getMessage()
+            ]);
+        }
+    }
 }
