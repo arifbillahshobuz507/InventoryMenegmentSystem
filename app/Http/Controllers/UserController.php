@@ -36,7 +36,7 @@ class UserController extends Controller
                 "status" => "Success",
                 "massage" => "User Create Successfully!",
             ]);
-        } 
+        }
         catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
