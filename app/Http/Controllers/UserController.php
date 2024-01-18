@@ -39,12 +39,12 @@ class UserController extends Controller
             return response()->json([
                 "status" => "Success",
                 "massage" => "User Create Successfully!",
-            ]);
+            ], 200);
         } catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
                 "massage" => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 
@@ -70,7 +70,7 @@ class UserController extends Controller
             return response()->json([
                 "status" => "Faild",
                 "massage" => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 
@@ -100,7 +100,7 @@ class UserController extends Controller
             return response()->json([
                 "status" => "Faild",
                 "massage" => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 
@@ -108,10 +108,10 @@ class UserController extends Controller
     {
         try {
             $request->validate([
-                'email'=> 'required|email|string|max:50',
-                'otp'=> 'required|max:7'
+                'email' => 'required|email|string|max:50',
+                'otp' => 'required|max:7|min:7'
             ]);
-            
+
             $email = $request->input('email');
             $otp = $request->input('otp');
 
@@ -132,7 +132,7 @@ class UserController extends Controller
             return response()->json([
                 "status" => "Faild",
                 "massage" => $e->getMessage()
-            ]);
+            ], 200);
         }
     }
 }
