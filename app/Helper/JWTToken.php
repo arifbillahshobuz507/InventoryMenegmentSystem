@@ -27,7 +27,7 @@ class JWTToken
         $payload = [
             'iss' => 'Larave',
             'iat' => time(),
-            'exp' => time() + 60 * 6,
+            'exp' => time() + 60 * 60,
             'userEmail' => $userEmail,
         ];
         return JWT::encode($payload, $key, 'HS256');
@@ -38,7 +38,7 @@ class JWTToken
         try {
             $key = env('JWT_KEY');
             $decode = JWT::decode($token, new Key($key, 'HS256'));
-            $decode->userEmail;
+           return $decode->userEmail;
         } catch (Exception $e) {
             return "unauthorized";
         }

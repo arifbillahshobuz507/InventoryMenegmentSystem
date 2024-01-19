@@ -22,3 +22,6 @@ Route::post('/user-registration', [UserController::class ,'UserRegistration']);
 Route::post('/user-login', [UserController::class ,'UserLogin']);
 Route::post('/send-otp', [UserController::class ,'SendOtp']);
 Route::post('/veryfy-otp', [UserController::class ,'VerifyOTP']);
+
+// middleware check verify otp than reset passeord
+Route::post('/reset-password', [UserController::class ,'ResetPassword'])->middleware('verifyJWTToken');

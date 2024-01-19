@@ -25,7 +25,7 @@ class TokenVerificationMiddleware
             ]);
         }
         else{
-            $request->headers->set('email', $request);
+            $request->headers->set('email', $verifyToken);
             return $next($request);
         }        
     }
