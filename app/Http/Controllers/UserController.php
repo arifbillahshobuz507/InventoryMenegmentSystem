@@ -15,6 +15,45 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function LoginPage(){
+        return view('pages.auth.login-page');
+    }
+    public function RegistrationPage(){
+        return view('pages.auth.registration-page');
+    }
+    public function SendOtpPage(){
+        return view('pages.auth.send-otp-page');
+    }
+    public function VerifyOtpPage(){
+        return view('pages.auth.verify-otp-page');
+    }
+    public function ResetPasswordPage(){
+        return view('pages.auth.reset-pass-page');
+    }
+    public function Dashboard(){
+        return view('pages.dashboard.dashboard-page');
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public function UserRegistration(Request $request)
     {
 
@@ -62,14 +101,19 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'massage' => "User Login successfully",
-                    'token' => $token
+                    'message' => "User Login successfully",
+                ], 200)->cookie("LoginToken", $token, 60*60);
+            }
+            else{
+                return response()->json([
+                    "status" => "Faild",
+                    "message" => "unauthorise"
                 ], 200);
             }
         } catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
-                "massage" => $e->getMessage()
+                "message" => $e->getMessage()
             ], 200);
         }
     }

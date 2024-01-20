@@ -15,9 +15,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+// Frontend Routes
 Route::get('/', [HomeController::class ,'FrontendHome']);
+Route::get('/userRegistration', [UserController::class ,'RegistrationPage']);
+Route::get('/dashboard', [UserController::class ,'Dashboard']);
+Route::get('/userLogin', [UserController::class ,'LoginPage']);
+Route::get('/sendOtp', [UserController::class ,'SendOtpPage']);
+Route::get('/veryfyOtp', [UserController::class ,'VerifyOtpPage']);
 
+// middleware check verify otp than reset passeord
+Route::post('/resetPassword', [UserController::class ,'ResetPasswordPage'])->middleware('verifyJWTToken');
+
+
+
+// API Routes
 Route::post('/user-registration', [UserController::class ,'UserRegistration']);
 Route::post('/user-login', [UserController::class ,'UserLogin']);
 Route::post('/send-otp', [UserController::class ,'SendOtp']);
