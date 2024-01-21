@@ -4,33 +4,35 @@
             <div class="card animated fadeIn w-100 p-3">
                 <div class="card-body">
                     <h4>Sign Up</h4>
-                    <hr/>
+                    <hr />
                     <div class="container-fluid m-0 p-0">
                         <div class="row m-0 p-0">
                             <div class="col-md-4 p-2">
                                 <label>Email Address</label>
-                                <input id="email" placeholder="User Email" class="form-control" type="email"/>
+                                <input id="email" placeholder="User Email" class="form-control" type="email" />
                             </div>
                             <div class="col-md-4 p-2">
                                 <label>First Name</label>
-                                <input id="firstName" placeholder="First Name" class="form-control" type="text"/>
+                                <input id="firstName" placeholder="First Name" class="form-control" type="text" />
                             </div>
                             <div class="col-md-4 p-2">
                                 <label>Last Name</label>
-                                <input id="lastName" placeholder="Last Name" class="form-control" type="text"/>
+                                <input id="lastName" placeholder="Last Name" class="form-control" type="text" />
                             </div>
                             <div class="col-md-4 p-2">
                                 <label>Mobile Number</label>
-                                <input id="phone" placeholder="Phone" class="form-control" type="number"/>
+                                <input id="phone" placeholder="Phone" class="form-control" type="number" />
                             </div>
                             <div class="col-md-4 p-2">
                                 <label>Password</label>
-                                <input id="password" placeholder="User Password" class="form-control" type="password"/>
+                                <input id="password" placeholder="User Password" class="form-control"
+                                    type="password" />
                             </div>
                         </div>
                         <div class="row m-0 p-0">
                             <div class="col-md-4 p-2">
-                                <button onclick="onRegistration()" class="btn mt-3 w-100  bg-gradient-primary">Complete</button>
+                                <button onclick="onRegistration()"
+                                    class="btn mt-3 w-100  bg-gradient-primary">Complete</button>
                             </div>
                         </div>
                     </div>
@@ -41,10 +43,42 @@
 </div>
 
 <script>
+    async function onRegistration() {
 
+        let email = document.getElementById('email').value;
+        let firstName = document.getElementById('firstName').value;
+        let lastName = document.getElementById('lastName').value;
+        let phone = document.getElementById('phone').value;
+        let password = document.getElementById('password').value;
 
-  async function onRegistration() {
-
-       
+        if (email.length === 0) {
+            errorToast('Emai is Required');
+        } else if (firstName.length === 0) {
+            errorToast('First Name is Required');
+        } else if (lastName.length === 0) {
+            errorToast('Last Name is Required');
+        } else if (phone.length === 0) {
+            errorToast('Phone Name is Required');
+        } else if (password.length === 0) {
+            errorToast('Password Name is Required');
+        } else {
+            showLoader();
+            let response = await axios.post("user-registration", {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                password: password
+            });
+            hideLoader();
+            if (response.status === 200 && response.data['status'] === 'Success') {
+                successToast(response.data['massage']);
+                setTimeout(function() {
+                    window.location.href = "/userLogin";
+                }, 1000);
+            } else {
+                errorToast(response.data['massage']);
+            }
+        }
     }
 </script>

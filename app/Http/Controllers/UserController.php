@@ -43,17 +43,6 @@ class UserController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
     public function UserRegistration(Request $request)
     {
 
@@ -137,13 +126,19 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'massage' => "OTP send successfully"
+                    'message' => "OTP send successfully"
+                ], 200);
+            }
+            else{
+                return response()->json([
+                    "status" => "Faild",
+                    "message" => "unauthorized"
                 ], 200);
             }
         } catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
-                "massage" => $e->getMessage()
+                "message" => $e->getMessage()
             ], 200);
         }
     }
