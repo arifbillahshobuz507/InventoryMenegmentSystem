@@ -16,6 +16,25 @@
 </div>
 <script>
    async function VerifyOtp() {
-       
+       let email = sessionStorage.getItem('email');
+       let otp = document.getElementById('otp').value;
+       if(otp.length !== 7 ){
+            errorToast('Invalid OTP');
+       }
+       showLoader();
+       let response = await axios.post("/veryfy-otp", {
+        email: email, otp: otp
+       });
+       hideLoader();
+
+       if(response.status==200 && response.data['status']== 'success'){
+        successToast(response.data['message']);
+        sessionStorage.clear();
+        setTimeout(function (){
+            window.location.herf = "/veryfyOtp";
+        }, 1000);
+       }else{
+            errorToast(response.data['message']);
+       }
     }
 </script>

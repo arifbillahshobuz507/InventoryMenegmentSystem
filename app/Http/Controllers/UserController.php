@@ -163,14 +163,14 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'massage' => "OTP Veryfy successfully",
+                    'message' => "OTP Veryfy successfully",
                     'token' => $token
                 ], 200);
             }
         } catch (Exception $e) {
             return response()->json([
                 "status" => "Faild",
-                "massage" => $e->getMessage()
+                "message" => $e->getMessage()
             ], 200);
         }
     }

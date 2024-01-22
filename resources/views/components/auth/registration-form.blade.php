@@ -63,7 +63,7 @@
             errorToast('Password Name is Required');
         } else {
             showLoader();
-            let response = await axios.post("user-registration", {
+            let response = await axios.post("/user-registration", {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
