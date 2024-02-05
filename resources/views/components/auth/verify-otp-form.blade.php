@@ -31,7 +31,7 @@
         successToast(response.data['message']);
         sessionStorage.clear();
         setTimeout(function (){
-            window.location.herf = "/veryfyOtp";
+            window.location.href = "/resetPassword";
         }, 1000);
        }else{
             errorToast(response.data['message']);

@@ -18,13 +18,12 @@ use Illuminate\Support\Facades\Route;
 // Frontend Routes
 Route::get('/', [HomeController::class ,'FrontendHome']);
 Route::get('/userRegistration', [UserController::class ,'RegistrationPage']);
-Route::get('/dashboard', [UserController::class ,'Dashboard']);
-Route::get('/userLogin', [UserController::class ,'LoginPage']);
+Route::get('/dashboard', [UserController::class ,'Dashboard'])->middleware('verifyJWTToken');
+Route::get('/user-login', [UserController::class ,'LoginPage'])->name('user.login');
 Route::get('/sendOtp', [UserController::class ,'SendOtpPage']);
 Route::get('/veryfyOtp', [UserController::class ,'VerifyOtpPage']);
-
-// middleware check verify otp than reset passeord
-Route::post('/resetPassword', [UserController::class ,'ResetPasswordPage'])->middleware('verifyJWTToken');
+Route::get('/resetPassword', [UserController::class ,'ResetPasswordPage'])->middleware('verifyJWTToken');
+Route::get('/user-logout', [UserController::class ,'userLogout'])->middleware('verifyJWTToken');
 
 
 

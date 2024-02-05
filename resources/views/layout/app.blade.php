@@ -20,8 +20,8 @@
 
     <div id="loader" class="LoadingOverlay d-none">
         <div class="Line-Progress">
-            <div class=""></div>
-        </div>indeterminate
+            <div class="indeterminate"></div>
+        </div>
     </div>
 
     <div>

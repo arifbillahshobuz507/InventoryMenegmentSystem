@@ -9,7 +9,7 @@
                     <input id="password" placeholder="New Password" class="form-control" type="password"/>
                     <br/>
                     <label>Confirm Password</label>
-                    <input id="cpassword" placeholder="Confirm Password" class="form-control" type="password"/>
+                    <input id="confirmpassword" placeholder="Confirm Password" class="form-control" type="password"/>
                     <br/>
                     <button onclick="ResetPass()" class="btn w-100 bg-gradient-primary">Next</button>
                 </div>
@@ -19,8 +19,34 @@
 </div>
 
 <script>
-  async function ResetPass() {
-       
+async function ResetPass() {
+    let password = document.getElementById('password').value;
+    let confirmpassword = document.getElementById('confirmpassword').value;
 
+    if(password.length === 0){
+        errorToast("Password is required");
+    } else if(confirmpassword.length === 0){
+        errorToast("Confrim Password is required");
+    } else if(password !== confirmpassword){
+        errorToast("Password and Confirm Password must be same");
+    } else{
+        showLoader();
+        
+        let response = await axios.post("/reset-password", {
+            password: password
+        });
+        
+      debugger;
+        // hideLoader();
+        if(response.status===200 && response.data["status"]==="success"){
+            successToast(response.data["message"]);
+            setTimeout(() => {
+                window.location.href ="/userLogin";
+            }, 1000);
+        }else{
+            errorToast(response.data["message"]);
+        }
     }
+    
+ }
 </script>

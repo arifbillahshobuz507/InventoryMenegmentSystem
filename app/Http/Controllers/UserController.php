@@ -42,7 +42,7 @@ class UserController extends Controller
 
 
 
-
+    // User registration 
     public function UserRegistration(Request $request)
     {
 
@@ -76,6 +76,7 @@ class UserController extends Controller
         }
     }
 
+    // User Login
     public function UserLogin(Request $request)
     {
         try {
@@ -83,20 +84,22 @@ class UserController extends Controller
             $email = $request->input('email');
             $password = $request->input('password');
 
-            $count = User::where('email', '=', $email)->where('password', '=', $password)->count();
-            if ($count == 1) {
+            $count = User::where('email', '=', $email)
+            ->where('password', '=', $password)
+            ->select('id')->first();
+            if ($count !== null) {
 
-                $token = JWTToken::CreateToken($email);
+                $token = JWTToken::CreateToken($email, $count->id);
 
                 return response()->json([
                     'status' => 'success',
                     'message' => "User Login successfully",
-                ], 200)->cookie("LoginToken", $token, 60*60);
+                ], 200)->cookie("token", $token, 60*60);
             }
             else{
                 return response()->json([
                     "status" => "Faild",
-                    "message" => "unauthorise"
+                    "message" => "unauthorized"
                 ], 200);
             }
         } catch (Exception $e) {
@@ -107,6 +110,7 @@ class UserController extends Controller
         }
     }
 
+    // Send OTP
     public function SendOtp(Request $request)
     {
         try {
@@ -143,6 +147,7 @@ class UserController extends Controller
         }
     }
 
+    // Verify OTP
     public function VerifyOTP(Request $request)
     {
         try {
@@ -163,9 +168,8 @@ class UserController extends Controller
 
                 return response()->json([
                     'status' => 'success',
-                    'message' => "OTP Veryfy successfully",
-                    'token' => $token
-                ], 200);
+                    'message' => "OTP Veryfy successfully"
+                ], 200)->cookie("token", $token, 60*60*30);
             }
         } catch (Exception $e) {
             return response()->json([
@@ -175,6 +179,7 @@ class UserController extends Controller
         }
     }
 
+    // ResetPassword
     public function ResetPassword(Request $request){
         try{
             $password = $request->input('password');
@@ -182,14 +187,18 @@ class UserController extends Controller
             User::where('email','=',$email)->update(['password' => $password]);
             return response()->json([
                 'status' => 'success',
-                'massage' => "Reset password successfully",
+                'message' => "Reset password successfully",
             ], 200);
         }catch(Exception $e){
             return response()->json([
                 "status" => "Faild",
-                "massage" => $e->getMessage()
+                "message" => $e->getMessage()
             ], 200);
         }
       
+    }
+
+    public function userLogout(){
+        return redirect('/user-login')->cookie('token',' ',-1);
     }
 }
